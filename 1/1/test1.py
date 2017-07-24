@@ -1,6 +1,6 @@
 # -*- coding: cp936 -*-
 import xlrd,os,sys,random,xlwt
-
+import myConst
 
 def read_execl():
     path = os.getcwd()
