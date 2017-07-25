@@ -12,39 +12,13 @@ from time import sleep
 import matplotlib.pyplot as plt # plt 用于显示图片
 import matplotlib.image as mpimg # mpimg 用于读取图片
 import numpy as np
-from PIL import Image
-#from skimage import io
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-def main():
-    url='http://bangumi.bilibili.com/moe/2017/jp/index#/schedule?id=20170724'    #感觉这个话题下面美女多    
-    headers={}
-    i=1
-    for x in xrange(20,3600,20):        
-        data={'start':'0','offset':str(x),'_xsrf':'a128464ef225a69348cef94c38f4e428'}        #知乎用offset控制加载的个数，每次响应加载20        
-        content=requests.post(url,headers=headers,data=data,timeout=10).text        #用post提交form data
-        print "content is"
-        print content
-        imgs=re.findall('<img src=\\\\\"(.*?)_m.jpg',content)          #在爬下来的json上用正则提取图片地址，去掉_m为大图          
-        for img in imgs:            
-            try:
-                img=img.replace('\\','')                #去掉\字符这个干扰成分                
-                pic=img+'.jpg'
-                path='D:\\myWork\\ForPythonTest\\1\\2\\jpg\\'+str(i)+'.jpg'                #声明存储地址及图片名称                
-                urllib.urlretrieve(pic,path)                #下载图片                
-                print u'下载了第'+str(i)+u'张图片'
-                i+=1                
-                sleep(random.uniform(0.5,1))                #睡眠函数用于防止爬取过快被封IP               
-            except:
-                print u'抓漏1张'                
-                pass
-        sleep(random.uniform(0.5,1))
+
+
+
 
 def test():
-    #url='http://bangumi.bilibili.com/moe/2017/jp/index#/schedule?id=20170724'       
-    #headers={}
-    #data = {}
-    #content = requests.post(url,headers,data,timeout = 10).text
-    #print content
 
     url = 'http://www.itwhy.org'
     
@@ -96,30 +70,34 @@ def InputYourMessage():
 
 def readPicture():
     im = Image.open('picture.jpg')
-    #im.show()
-    
-    r,g,b = im.split()#分割成三个通道 
-    print r,g,b
-    #r.show()  
-    #g.show()  
-    #b.show()  
-    im = Image.merge("RGB", (g, b, r))#将b,g,r 三个通道进行翻转。
-    im.show()
-    
-    #img=io.imread('picture.jpg')
-    #io.imshow(img)
-    #picture = mpimg.imread('picture.jpg') # 读取和代码处于同一目录下的 lena.png
-    # 此时 lena 就已经是一个 np.array 了，可以对它进行任意处理
-    #picture.shape #(512, 512, 3)
 
-    #plt.imshow(picture) # 显示图片
-    #plt.axis('off') # 不显示坐标轴
-    #plt.show()    
-
-
+    img_data=im.getdata()
+    img_array = list(img_data)
     
+    theAllImageLen = len(img_array)
+    theImageWide = im.getbbox()[2]
+    theImageLeath = im.getbbox()[3]
+    
+    print  theImageWide,theImageLeath
+    
+    large = 8
+    
+    NewImage = Image.new( 'RGB', (theImageWide*large,theImageLeath*large),(255, 255, 255) )
+    font = ImageFont.truetype('STXIHEI.TTF', 8)
+    draw = ImageDraw.Draw(NewImage)
+    
+    for i in range(theImageWide*large):
+        for j in range(theImageLeath*large):
+            if  ( (i%24) == 0 ) and ((j%20) == 0 ):
+                draw.text((i, j), unicode("珂朵莉",'UTF-8'), font = font, fill=img_array[(i/large)*theImageLeath+j/large] )
+    
+    
+    NewImage.save('test.jpg', 'jpeg');
     
 if __name__=='__main__':   
     #main()
     #InputYourMessage()
+    #for i in range(4):
+    #    print i
+    #print 5/4
     readPicture()
