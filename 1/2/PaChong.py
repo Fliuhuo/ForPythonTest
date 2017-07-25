@@ -69,7 +69,7 @@ def InputYourMessage():
 
 
 def readPicture():
-    im = Image.open('picture.jpg')
+    im = Image.open('6.jpg')
 
     img_data=im.getdata()
     img_array = list(img_data)
@@ -78,18 +78,23 @@ def readPicture():
     theImageWide = im.getbbox()[2]
     theImageLeath = im.getbbox()[3]
     
-    print  theImageWide,theImageLeath
+    #print  theImageWide,theImageLeath
     
-    large = 8
+    large = 6
     
     NewImage = Image.new( 'RGB', (theImageWide*large,theImageLeath*large),(255, 255, 255) )
-    font = ImageFont.truetype('STXIHEI.TTF', 8)
+    font = ImageFont.truetype('STXIHEI.TTF', 4)
     draw = ImageDraw.Draw(NewImage)
     
+    size = draw.textsize(unicode("1s",'UTF-8'),font = font)
+    print size #（40，10）
     for i in range(theImageWide*large):
-        for j in range(theImageLeath*large):
-            if  ( (i%24) == 0 ) and ((j%20) == 0 ):
-                draw.text((i, j), unicode("珂朵莉",'UTF-8'), font = font, fill=img_array[(i/large)*theImageLeath+j/large] )
+        for j in range(theImageLeath*large):                       
+            #if i % 4 == 0:
+            if (i+1) % 6 == 0 and j%6 == 0 :
+                fill = img_array[(i/large)*theImageLeath+j/large]
+                #print fill
+                draw.text((i, j), unicode("1s",'UTF-8'), font = font, fill=fill )
     
     
     NewImage.save('test.jpg', 'jpeg');
