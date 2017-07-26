@@ -66,10 +66,26 @@ def InputYourMessage():
     password = input("please enter your password:")
     print theId
     print password
+    
+def numbers_to_strings(argument):
+    switcher = {
+        0: unicode("珂",'UTF-8'),
+        1: unicode("朵",'UTF-8'),
+        2: unicode("莉",'UTF-8'),
+        3: unicode("哔",'UTF-8'),
+        4: unicode("哩",'UTF-8'),
+        5: unicode("哔",'UTF-8'),
+        6: unicode("哩",'UTF-8'),
+        7: unicode("萌",'UTF-8'),
+        8: unicode("战",'UTF-8'),
+        9: unicode("加",'UTF-8'),
+        10: unicode("油",'UTF-8'),
+    }
+    return switcher.get(argument, "nothing")
 
 
 def readPicture():
-    im = Image.open('6.jpg')
+    im = Image.open('7.jpg')
 
     img_data=im.getdata()
     img_array = list(img_data)
@@ -78,26 +94,22 @@ def readPicture():
     theImageWide = im.getbbox()[2]
     theImageLeath = im.getbbox()[3]
     
-    #print  theImageWide,theImageLeath
+    print  theImageWide,theImageLeath # 134 ，187
     
-    large = 6
+    large = 20
     
-    NewImage = Image.new( 'RGB', (theImageWide*large,theImageLeath*large),(255, 255, 255) )
-    font = ImageFont.truetype('STXIHEI.TTF', 4)
+    NewImage = Image.new( 'RGB', (theImageWide*large,theImageLeath*large),(192, 192, 192) )
+    font = ImageFont.truetype('STXIHEI.TTF', 16)
     draw = ImageDraw.Draw(NewImage)
     
-    size = draw.textsize(unicode("1s",'UTF-8'),font = font)
-    print size #（40，10）
-    for i in range(theImageWide*large):
-        for j in range(theImageLeath*large):                       
-            #if i % 4 == 0:
-            if (i+1) % 6 == 0 and j%6 == 0 :
-                fill = img_array[(i/large)*theImageLeath+j/large]
-                #print fill
-                draw.text((i, j), unicode("1s",'UTF-8'), font = font, fill=fill )
+    for j in range(theImageLeath):
+        for i in range(theImageWide):
+            pos = i+2 #八号字长度8，10 
+            fill = img_array[j*theImageWide+i]
+            text = numbers_to_strings(i%11)
+            draw.text((pos*large, j*large), text, font = font, fill=fill )
     
-    
-    NewImage.save('test.jpg', 'jpeg');
+    NewImage.save('test1.jpg', 'jpeg');
     
 if __name__=='__main__':   
     #main()
