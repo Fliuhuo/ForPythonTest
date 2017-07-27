@@ -53,9 +53,5 @@ def readPicture():
     NewImage.save('test2.jpg', 'jpeg');
     
 if __name__=='__main__':   
-    #main()
-    #InputYourMessage()
-    #for i in range(4):
-    #    print i
-    #print 5/4
+
     readPicture()
