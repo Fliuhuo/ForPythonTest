@@ -85,7 +85,7 @@ def numbers_to_strings(argument):
 
 
 def readPicture():
-    im = Image.open('7.jpg')
+    im = Image.open('1.jpg')
 
     img_data=im.getdata()
     img_array = list(img_data)
@@ -109,7 +109,43 @@ def readPicture():
             text = numbers_to_strings(i%11)
             draw.text((pos*large, j*large), text, font = font, fill=fill )
     
-    NewImage.save('test1.jpg', 'jpeg');
+    NewImage.save('test3.jpg', 'jpeg');
+    
+    
+def readPicture1():
+    im = Image.open('1.jpg')
+
+    img_data=im.getdata()
+    img_array = list(img_data)
+    
+    theAllImageLen = len(img_array)
+    theImageWide = im.getbbox()[2]
+    theImageLeath = im.getbbox()[3]
+    
+    print  theImageWide,theImageLeath # 134 ，187
+    
+    large = 10
+    
+    NewImage = Image.new( 'RGB', (theImageWide*large,theImageLeath*large),(192, 192, 192) )
+    font = ImageFont.truetype('STXIHEI.TTF', 16)
+    draw = ImageDraw.Draw(NewImage)
+    
+    k = -1
+    for j in range(theImageLeath):
+        for i in range(theImageWide):
+            k = k + 1
+            if (i%2 == 0) and (j%2 == 0):
+                pos = i+2 #八号字长度8，10 
+                fill = img_array[j*(theImageWide)+i]
+                text = numbers_to_strings(k%11)
+                draw.text((pos*large, j*large), text, font = font, fill=fill )
+            else:
+                k = k - 1
+                
+                
+    
+    NewImage.save('test4.jpg', 'jpeg');
+    
     
 if __name__=='__main__':   
     #main()
@@ -117,4 +153,4 @@ if __name__=='__main__':
     #for i in range(4):
     #    print i
     #print 5/4
-    readPicture()
+    readPicture1()
